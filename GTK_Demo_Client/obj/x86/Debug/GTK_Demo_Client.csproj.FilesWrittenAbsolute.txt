@@ -1,0 +1,7 @@
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/obj/x86/Debug/GTK_Demo_Client.gtk-gui.gui.stetic
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/bin/Debug/GTK_Demo_Packet.dll
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/bin/Debug/GTK_Demo_Client.pdb
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/bin/Debug/GTK_Demo_Client.exe
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/obj/x86/Debug/GTK_Demo_Client.exe
+/Users/summerflower/Projects/GTK_Demo_Client/GTK_Demo_Client/obj/x86/Debug/GTK_Demo_Client.pdb
