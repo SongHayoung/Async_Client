@@ -12,7 +12,8 @@ using GTK_Demo_Packet;
 
 public partial class MainWindow : Gtk.Window
 {
-	string Server_IP = "172.16.38.199";
+	string Server_IP = "192.168.0.13";
+	string Local_IP = GetLocalIPAddress();
 	public MainWindow() : base(Gtk.WindowType.Toplevel)
 	{
 		Build();
@@ -37,6 +38,8 @@ public partial class MainWindow : Gtk.Window
 			login.packet_Type = (int)PacketType.Login;
 			login.id_str = entry1.Text.Trim();
 			login.pw_str = entry2.Text.Trim();
+			login.ip_str = Local_IP;
+			login.port_str = "20000";						//port number how can i fix it?
 
 			Console.WriteLine("user id : {0}", login.id_str);
 			Console.WriteLine("user pass : {0}", login.pw_str);
@@ -46,7 +49,6 @@ public partial class MainWindow : Gtk.Window
 			Array.Clear(buffer, 0, buffer.Length);
 			int bytesRead = stream.Read(buffer, 0, buffer.Length);
 			LoginResult loginResult = (LoginResult)Packet.Deserialize(buffer);
-
 			if (loginResult.result)
 			{
 				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
@@ -115,7 +117,7 @@ public partial class MainWindow : Gtk.Window
 			int bytesRead = stream.Read(buffer, 0, buffer.Length);
 			MemberRegisterResult mrResult = (MemberRegisterResult)Packet.Deserialize(buffer);
 
-			if (mrResult.result)
+			if (mrResult.error_code==0)
 			{
 				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
 											   Gtk.ButtonsType.Ok, "Success");
@@ -129,7 +131,21 @@ public partial class MainWindow : Gtk.Window
 					return;
 				}
 			}
-			else
+			else if(mrResult.error_code==1)
+			{
+				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
+											   Gtk.ButtonsType.Ok, "ID already exsist");
+				dialog.Show();
+				int r = dialog.Run();
+				dialog.Destroy();
+				if (r != (int)Gtk.ResponseType.Yes)
+				{
+					stream.Close();
+					client.Close();
+					return;
+				}
+			}
+			else 
 			{
 				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
 											   Gtk.ButtonsType.Ok, "fail");
@@ -154,5 +170,18 @@ public partial class MainWindow : Gtk.Window
 			if (r != (int)Gtk.ResponseType.Yes)
 			{ return; }
 		}
+	}
+
+	public static string GetLocalIPAddress()
+	{
+		var host = Dns.GetHostEntry(Dns.GetHostName());
+		foreach (var ip in host.AddressList)
+		{
+			if (ip.AddressFamily == AddressFamily.InterNetwork)
+			{
+				return ip.ToString();
+			}
+		}
+		throw new Exception("No network adapters with an IPv4 address in the system!");
 	}
 }
