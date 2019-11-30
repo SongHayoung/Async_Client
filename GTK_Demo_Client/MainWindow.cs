@@ -1,22 +1,34 @@
 ﻿using System;
 using Gtk;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
-using System.Windows;
-using GTK_Demo_Packet;
+using GTK_Demo_Client.DataHandler;
 
 public partial class MainWindow : Gtk.Window
 {
-	string Server_IP = "192.168.0.13";
-	string Local_IP = GetLocalIPAddress();
 	public MainWindow() : base(Gtk.WindowType.Toplevel)
 	{
 		Build();
+		PopupHandling();
+
+	}
+
+	private void PopupHandling()
+	{
+		while (true)
+		{
+			string Popup_Message = CDataHandler.Handling_PopupMessage();
+			if (Popup_Message == null)
+				continue;
+
+			Gtk.MessageDialog dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
+											   Gtk.ButtonsType.Ok, Popup_Message);
+			dialog.Show();
+			int status = dialog.Run();
+			dialog.Destroy();
+			if (status != (int)Gtk.ResponseType.Yes)
+			{
+				return;
+			}
+		}
 	}
 
 	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
@@ -26,162 +38,52 @@ public partial class MainWindow : Gtk.Window
 	}
 
 	protected void OnButton1Clicked(object sender, EventArgs e)
-	{
-		try
-		{
-			byte[] buffer = new byte[1024 * 4];
+	{   //LoginButton
+		string ID = entry1.Text.Trim();
+		string Pass = entry2.Text.Trim();
 
-			TcpClient client = new TcpClient(Server_IP, 5011);
-			NetworkStream stream = client.GetStream();
-
-			Login login = new Login();
-			login.packet_Type = (int)PacketType.Login;
-			login.id_str = entry1.Text.Trim();
-			login.pw_str = entry2.Text.Trim();
-			login.ip_str = Local_IP;
-			login.port_str = "20000";						//port number how can i fix it?
-
-			Console.WriteLine("user id : {0}", login.id_str);
-			Console.WriteLine("user pass : {0}", login.pw_str);
-
-			Packet.Serialize(login).CopyTo(buffer, 0);
-			stream.Write(buffer, 0, buffer.Length);
-			Array.Clear(buffer, 0, buffer.Length);
-			int bytesRead = stream.Read(buffer, 0, buffer.Length);
-			LoginResult loginResult = (LoginResult)Packet.Deserialize(buffer);
-			if (loginResult.result)
-			{
-				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "Success");
-				dialog.Show();
-				int r = dialog.Run();
-				dialog.Destroy();
-				if (r != (int)Gtk.ResponseType.Yes)
-				{
-					GTK_Demo_Client.GameWindow GameWindow = new GTK_Demo_Client.GameWindow();
-					GameWindow.Show();
-					this.Hide();
-					stream.Close();
-					client.Close();
-
-					return; 
-				}
-			}
-			else
-			{
-				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "fail");
-				dialog.Show();
-				int r = dialog.Run();
-				dialog.Destroy();
-				if (r != (int)Gtk.ResponseType.Yes)
-				{ 
-					stream.Close();
-					client.Close();
-					return; 
-				}
-			}
-		}
-		catch (Exception error)
+		CDataFactory DataFactory = CDataFactory.GetDataFactory();
+		if (!LoginRequest(ID, Pass))
 		{
 			var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "error");
-			dialog.Show();
-			int r = dialog.Run();
-			dialog.Destroy();
-			if (r != (int)Gtk.ResponseType.Yes)
-			{ return; }
+										   Gtk.ButtonsType.Ok, "Fail");
 		}
 	}
+
 
 	protected void OnButton2Clicked(object sender, EventArgs e)
-	{
-		try
-		{
-			byte[] buffer = new byte[1024 * 4];
+	{   //RegisterButton
+		string ID = entry1.Text.Trim();
+		string Pass = entry2.Text.Trim();
 
-			TcpClient client = new TcpClient(Server_IP, 5011);
-			NetworkStream stream = client.GetStream();
-
-			MemberRegister mr = new MemberRegister();
-			mr.packet_Type = (int)PacketType.Member_REGISTER;
-			mr.id_str = entry1.Text.Trim();
-			mr.pw_str = entry2.Text.Trim();
-
-			Console.WriteLine("user id : {0}", mr.id_str);
-			Console.WriteLine("user pass : {0}", mr.pw_str);
-
-			Packet.Serialize(mr).CopyTo(buffer, 0);
-			stream.Write(buffer, 0, buffer.Length);
-			Array.Clear(buffer, 0, buffer.Length);
-			int bytesRead = stream.Read(buffer, 0, buffer.Length);
-			MemberRegisterResult mrResult = (MemberRegisterResult)Packet.Deserialize(buffer);
-
-			if (mrResult.error_code==0)
-			{
-				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "Success");
-				dialog.Show();
-				int r = dialog.Run();
-				dialog.Destroy();
-				if (r != (int)Gtk.ResponseType.Yes)
-				{
-					stream.Close();
-					client.Close();
-					return;
-				}
-			}
-			else if(mrResult.error_code==1)
-			{
-				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "ID already exsist");
-				dialog.Show();
-				int r = dialog.Run();
-				dialog.Destroy();
-				if (r != (int)Gtk.ResponseType.Yes)
-				{
-					stream.Close();
-					client.Close();
-					return;
-				}
-			}
-			else 
-			{
-				var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "fail");
-				dialog.Show();
-				int r = dialog.Run();
-				dialog.Destroy();
-				if (r != (int)Gtk.ResponseType.Yes)
-				{
-					stream.Close();
-					client.Close();
-					return;
-				}
-			}
-		}
-		catch (Exception error)
+		if (!RegistRequest(ID, Pass))
 		{
 			var dialog = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
-											   Gtk.ButtonsType.Ok, "error");
-			dialog.Show();
-			int r = dialog.Run();
-			dialog.Destroy();
-			if (r != (int)Gtk.ResponseType.Yes)
-			{ return; }
+										   Gtk.ButtonsType.Ok, "Fail");
 		}
 	}
 
-	public static string GetLocalIPAddress()
+	public bool LoginRequest(string ID, string Pass)
 	{
-		var host = Dns.GetHostEntry(Dns.GetHostName());
-		foreach (var ip in host.AddressList)
+		try
 		{
-			if (ip.AddressFamily == AddressFamily.InterNetwork)
-			{
-				return ip.ToString();
-			}
+			return CDataHandler.Handling_LoginRequest(ID, Pass);
 		}
-		throw new Exception("No network adapters with an IPv4 address in the system!");
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+
+	public bool RegistRequest(string ID, string Pass)
+	{
+		try
+		{
+			return CDataHandler.Handling_RegisterRequest(ID, Pass);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
 }

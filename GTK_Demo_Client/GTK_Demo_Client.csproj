@@ -64,6 +64,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="gtk-gui\GTK_Demo_Client.GameWindow.cs" />
+    <Compile Include="Network\CNetworkManager.cs" />
+    <Compile Include="DataHandler\CDataHandler.cs" />
+    <Compile Include="DataHandler\CDataFactory.cs" />
+    <Compile Include="Popup\CPopupHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Network\" />
+    <Folder Include="DataHandler\" />
+    <Folder Include="Popup\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

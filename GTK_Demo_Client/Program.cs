@@ -1,16 +1,38 @@
 ﻿using System;
+using System.Threading;
+
 using Gtk;
+using GTK_Demo_Client.DataHandler;
+using GTK_Demo_Client.Network;
+using GTK_Demo_Client.Popup;
 
 namespace GTK_Demo_Client
 {
+	public enum Actions : int
+	{
+		Error = 0,
+		Donothing,
+		CloseWindow,
+	}
+
 	class MainClass
 	{
 		public static void Main(string[] args)
 		{
+			Thread NWManager = new Thread(new ThreadStart(CNetworkManager.Run));
+			//Thread PopupManager = new Thread(new ThreadStart(CPopupHandler.Run));
+			Thread HandlingManager = new Thread(new ThreadStart(CDataHandler.Run));
+
+			NWManager.Start();
+			//PopupManager.Start();
+			HandlingManager.Start();
+
 			Application.Init();
 			MainWindow win = new MainWindow();
 			win.Show();
 			Application.Run();
+
+
 		}
 	}
 }
