@@ -68,6 +68,8 @@
     <Compile Include="DataHandler\CDataHandler.cs" />
     <Compile Include="DataHandler\CDataFactory.cs" />
     <Compile Include="Popup\CPopupHandler.cs" />
+    <Compile Include="PopupWindow.cs" />
+    <Compile Include="gtk-gui\GTK_Demo_Client.PopupWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Network\" />

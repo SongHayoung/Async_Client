@@ -55,7 +55,7 @@ namespace GTK_Demo_Client.Network
 		public static void Handling()
 		{
 			
-			while (true)
+			while (MainClass.IsRunning())
 			{
 				byte[] buffer = CDataHandler.Handling_SendPacket();
 				if (buffer == null)
@@ -65,13 +65,22 @@ namespace GTK_Demo_Client.Network
 				SocketAsyncEventArgs Asynce = new SocketAsyncEventArgs();
 				Asynce.SetBuffer(buffer, 0, buffer.Length);
 				Asynce.Completed += new EventHandler<SocketAsyncEventArgs>(Send);
-				try
+				if (Client.Connected)
 				{
-					Client.SendAsync(Asynce);
+					try
+					{
+						Client.SendAsync(Asynce);
+					}
+					catch (SocketException se)
+					{
+						Console.WriteLine("Socket Exception : " + se.ErrorCode + "Message : " + se.Message);
+					}
 				}
-				catch (SocketException se)
+				else
 				{
-					Console.WriteLine("Socket Exception : " + se.ErrorCode + "Message : " + se.Message);
+					CDataFactory DataFactory = CDataFactory.GetDataFactory();
+					DataFactory.SetPopupBuffer("서버와의 연결이 끊겼습니다");
+					MainClass.SetRunning(false);
 				}
 			}
 
@@ -134,6 +143,9 @@ namespace GTK_Demo_Client.Network
 			{
 				client.Close();
 				Console.WriteLine("Connection Losted");
+				CDataFactory DataFactory = CDataFactory.GetDataFactory();
+				DataFactory.SetPopupBuffer("서버와의 연결이 끊겼습니다");
+				MainClass.SetRunning(false);
 			}
 		}
 

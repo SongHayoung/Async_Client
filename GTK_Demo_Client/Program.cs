@@ -17,6 +17,8 @@ namespace GTK_Demo_Client
 
 	class MainClass
 	{
+		private static bool Running = true;
+
 		public static void Main(string[] args)
 		{
 			Thread NWManager = new Thread(new ThreadStart(CNetworkManager.Run));
@@ -28,11 +30,25 @@ namespace GTK_Demo_Client
 			HandlingManager.Start();
 
 			Application.Init();
-			MainWindow win = new MainWindow();
+			MainWindow win = MainWindow.GetMainWindow();
 			win.Show();
 			Application.Run();
 
+			while (IsRunning())
+			{ }
 
+			NWManager.Join();
+			HandlingManager.Join();
+		}
+
+		public static bool IsRunning()
+		{
+			return Running;
+		}
+
+		public static void SetRunning(bool status)
+		{
+			Running = status;
 		}
 	}
 }

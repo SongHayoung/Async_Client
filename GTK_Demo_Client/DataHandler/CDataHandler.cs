@@ -9,18 +9,15 @@ namespace GTK_Demo_Client.DataHandler
 
 		public static void Run()
 		{
-			while (true)
-			{
-				Console.WriteLine("Handling Manager on Active");
-				Handling();
-				Console.WriteLine("Handling Manager Join");
-			}
+			Console.WriteLine("Handling Manager on Active");
+			Handling();
+			Console.WriteLine("Handling Manager Join");
 		}
 
 		public static void Handling()
 		{
 			CDataFactory DataFactory = CDataFactory.GetDataFactory();
-			while (true)
+			while (MainClass.IsRunning())
 			{
 				byte[] buffer = DataFactory.GetRecvBuffer();
 				if (buffer == null)
@@ -39,7 +36,6 @@ namespace GTK_Demo_Client.DataHandler
 					LoginResult result = (LoginResult)Packet.Deserialize(buffer);
 					DataFactory.SetPopupBuffer(result.msg);
 				}
-
 			}
 		}
 

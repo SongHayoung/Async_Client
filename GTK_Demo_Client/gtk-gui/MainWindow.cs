@@ -21,7 +21,7 @@ public partial class MainWindow
 
 	private global::Gtk.Button button2;
 
-	private global::Gtk.Label GtkLabel1;
+	private global::Gtk.Label GtkLabel2;
 
 	protected virtual void Build()
 	{
@@ -100,18 +100,18 @@ public partial class MainWindow
 		w6.Y = 300;
 		this.GtkAlignment.Add(this.fixed1);
 		this.frame1.Add(this.GtkAlignment);
-		this.GtkLabel1 = new global::Gtk.Label();
-		this.GtkLabel1.Name = "GtkLabel1";
-		this.GtkLabel1.LabelProp = global::Mono.Unix.Catalog.GetString("Tettris");
-		this.GtkLabel1.UseMarkup = true;
-		this.frame1.LabelWidget = this.GtkLabel1;
+		this.GtkLabel2 = new global::Gtk.Label();
+		this.GtkLabel2.Name = "GtkLabel2";
+		this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString("Tettris");
+		this.GtkLabel2.UseMarkup = true;
+		this.frame1.LabelWidget = this.GtkLabel2;
 		this.Add(this.frame1);
 		if ((this.Child != null))
 		{
 			this.Child.ShowAll();
 		}
-		this.DefaultWidth = 683;
-		this.DefaultHeight = 565;
+		this.DefaultWidth = 552;
+		this.DefaultHeight = 446;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 		this.button1.Clicked += new global::System.EventHandler(this.OnButton1Clicked);
