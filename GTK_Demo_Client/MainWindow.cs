@@ -1,22 +1,77 @@
 ﻿using System;
-using System.Threading;
+using System.ComponentModel;
 
 using Gtk;
-using Gdk;
 using GTK_Demo_Client.DataHandler;
 using GTK_Demo_Client.Popup;
 
 
 public partial class MainWindow : Gtk.Window
 {
-	private static MainWindow mainwindow = new MainWindow();
+	private BackgroundWorker PopupWorker;
 	public MainWindow() : base(Gtk.WindowType.Toplevel)
 	{
 		Build();
+		InitializeBackgroundWorker();
 	}
-	public static MainWindow GetMainWindow()
+
+    /*
+     * initializing BackgroundWorker Thread
+     */
+	private void InitializeBackgroundWorker()
 	{
-		return mainwindow;
+		PopupWorker = new BackgroundWorker();
+		PopupWorker.DoWork += new DoWorkEventHandler(Popup_Dowork);
+		PopupWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Popup_Completed);
+
+	}
+
+    /*
+     * BackgroundWorker Dowork
+     */
+	private void Popup_Dowork(object sender, DoWorkEventArgs e)
+	{
+		BackgroundWorker worker = (BackgroundWorker)sender;
+		string Popup_Message = "";
+		Console.WriteLine("Background Worker Do Process");
+		while (true)
+		{
+			Popup_Message = CDataHandler.Handling_PopupMessage();
+			if (Popup_Message == null)
+				continue;
+			break;
+		}
+		e.Result = Popup_Message;
+	}
+
+    /*
+     * BackgroundWorker RunWorkerCompleted
+     */
+	private void Popup_Completed(object sender, RunWorkerCompletedEventArgs e)
+	{
+		Console.WriteLine("Background Worker Job Done : "+e.Result.ToString());
+		Gtk.Application.Invoke(delegate {
+			ShowPopup(e.Result.ToString());
+		});
+	}
+
+    /*
+     * this function show popup message came from server
+     */
+	public void ShowPopup(string msg)
+	{
+		var Popup = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
+										   Gtk.ButtonsType.Ok, msg);
+		Popup.Show();
+		Popup.Run();
+		Popup.Destroy();
+
+		if (msg.CompareTo("로그인 성공") == 0)
+		{
+			GTK_Demo_Client.GameWindow GameWindow = new GTK_Demo_Client.GameWindow();
+			GameWindow.Show();
+			this.Hide();
+		}
 	}
 
 	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
@@ -24,6 +79,7 @@ public partial class MainWindow : Gtk.Window
 		Application.Quit();
 		a.RetVal = true;
 	}
+
 
 	protected void OnButton1Clicked(object sender, EventArgs e)
 	{   //LoginButton
@@ -39,10 +95,8 @@ public partial class MainWindow : Gtk.Window
 			request_fail.Destroy();
 			return;
 		}
-
-		GTK_Demo_Client.PopupWindow popup = new GTK_Demo_Client.PopupWindow();
-		popup.Show();
-		//ShowPopup();
+		if(!PopupWorker.IsBusy)
+			PopupWorker.RunWorkerAsync();
 	}
 
 
@@ -60,12 +114,13 @@ public partial class MainWindow : Gtk.Window
 			request_fail.Destroy();
 			return;
 		}
-
-		GTK_Demo_Client.PopupWindow popup = new GTK_Demo_Client.PopupWindow();
-		popup.Show();
-		//ShowPopup();
+		if(!PopupWorker.IsBusy)
+			PopupWorker.RunWorkerAsync();
 	}
 
+	/*
+	 * Not use
+	 */
 	private void ShowPopup()
 	{
 		string result_msg = CPopupHandler.GetMessageFromServer();
@@ -91,6 +146,9 @@ public partial class MainWindow : Gtk.Window
 
 	}
 
+    /*
+     * send ID and Pass to DataHandler
+     */
 	public bool LoginRequest(string ID, string Pass)
 	{
 		try
@@ -103,6 +161,9 @@ public partial class MainWindow : Gtk.Window
 		}
 	}
 
+    /*
+     * send ID and Pass to DataHandler
+     */
 	public bool RegistRequest(string ID, string Pass)
 	{
 		try

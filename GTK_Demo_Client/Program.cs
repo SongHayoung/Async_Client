@@ -30,7 +30,7 @@ namespace GTK_Demo_Client
 			HandlingManager.Start();
 
 			Application.Init();
-			MainWindow win = MainWindow.GetMainWindow();
+			MainWindow win = new MainWindow();
 			win.Show();
 			Application.Run();
 

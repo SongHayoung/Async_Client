@@ -12,7 +12,15 @@ namespace GTK_Demo_Client
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
+			this.Hide();
 			Run();
+		}
+
+		public PopupWindow(string msg) :
+				base(Gtk.WindowType.Toplevel)
+		{
+			this.Build();
+			Message.Text = msg;
 		}
 
 		private void Run()
@@ -33,7 +41,7 @@ namespace GTK_Demo_Client
 			{
 				GTK_Demo_Client.GameWindow GameWindow = new GTK_Demo_Client.GameWindow();
 				GameWindow.Show();
-				MainWindow mainwindow = MainWindow.GetMainWindow();
+				MainWindow mainwindow = new MainWindow();
 				mainwindow.Destroy();
 			}
 			this.Destroy();

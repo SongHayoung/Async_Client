@@ -14,6 +14,10 @@ namespace GTK_Demo_Client.Network
 		private static int Server_Port = 5011;
 		private static int Buf_Size = 1024 * 4;
 		private static string Local_IP;
+
+        /*
+         * Set option for TCP KeepAlive
+         */
 		public class CTcpKeepAlive
 		{
 			public uint OnOff { get; set; }
@@ -29,6 +33,9 @@ namespace GTK_Demo_Client.Network
 
 		public CNetworkManager() { }
 
+        /*
+         * Set Socket options Connect to Server
+         */
 		public static void Run()
 		{
 			Console.WriteLine("Network Manager on Active");
@@ -49,9 +56,11 @@ namespace GTK_Demo_Client.Network
 			Client.ConnectAsync(Asynce);
 			Handling();
 			Console.WriteLine("Network Manager Join");
-
 		}
 
+        /*
+         * Sending Packet to Server
+         */
 		public static void Handling()
 		{
 			
@@ -86,6 +95,9 @@ namespace GTK_Demo_Client.Network
 
 		}
 
+        /*
+         * Get Local IP
+         */
 		public static string GetLocalIPAddress()
 		{
 			var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -99,6 +111,9 @@ namespace GTK_Demo_Client.Network
 			throw new Exception("No network adapters with an IPv4 address in the system");
 		}
 
+        /*
+         * Connect Server Async
+         */
 		private static void Connect(object sender, SocketAsyncEventArgs e)
 		{
 			Socket client = (Socket)sender;
@@ -114,6 +129,9 @@ namespace GTK_Demo_Client.Network
 			}
 		}
 
+        /*
+         * Do nothing
+         */
 		private static void Send(object sender, SocketAsyncEventArgs e)
 		{
 			Socket client = (Socket)sender;
@@ -123,6 +141,9 @@ namespace GTK_Demo_Client.Network
 			}
 		}
 
+        /*
+         * Recieve Packet Async
+         */
         private static void Recieve(object sender, SocketAsyncEventArgs e)
 		{
 			Socket client = (Socket)sender;

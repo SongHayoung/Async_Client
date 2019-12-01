@@ -7,6 +7,9 @@ namespace GTK_Demo_Client.DataHandler
 	{
 		public CDataHandler() { }
 
+        /*
+         * Running DataHandler
+         */
 		public static void Run()
 		{
 			Console.WriteLine("Handling Manager on Active");
@@ -14,7 +17,10 @@ namespace GTK_Demo_Client.DataHandler
 			Console.WriteLine("Handling Manager Join");
 		}
 
-		public static void Handling()
+        /*
+         * this function helps moving Recv Sessions to right Stack at DataFactory
+         */
+        public static void Handling()
 		{
 			CDataFactory DataFactory = CDataFactory.GetDataFactory();
 			while (MainClass.IsRunning())
@@ -62,7 +68,10 @@ namespace GTK_Demo_Client.DataHandler
 			return DataFactory.GetPopupBuffer();
 		}
 
-		public static bool Handling_LoginRequest(string ID, string Pass)
+        /*
+         * Initilize Login Packet send to DataHandler
+         */
+        public static bool Handling_LoginRequest(string ID, string Pass)
 		{
 			CDataFactory DataFactory = CDataFactory.GetDataFactory();
 			Login request = new Login();
@@ -75,7 +84,10 @@ namespace GTK_Demo_Client.DataHandler
 			return DataFactory.SetSendBuffer(Packet.Serialize(request));
 		}
 
-		public static bool Handling_RegisterRequest(string ID, string Pass)
+        /*
+         * Initilize MemberRegister Packet send to DataHandler
+         */
+        public static bool Handling_RegisterRequest(string ID, string Pass)
 		{
 			CDataFactory DataFactory = CDataFactory.GetDataFactory();
 			MemberRegister request = new MemberRegister();

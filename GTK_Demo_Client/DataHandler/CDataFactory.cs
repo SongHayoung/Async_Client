@@ -18,11 +18,17 @@ namespace GTK_Demo_Client.DataHandler
 
 		public CDataFactory() { }
 
+        /*
+         * return DataFactory
+         */
 		public static CDataFactory GetDataFactory()
 		{
 			return DataFactory;
 		}
 
+        /*
+         * set buffer at SendBuffer
+         */
 		public bool SetSendBuffer(byte[] buffer)
 		{
 			lock(Send_Lock)
@@ -32,6 +38,9 @@ namespace GTK_Demo_Client.DataHandler
 			return true;
 		}
 
+        /*
+         * get buffer from SendBuffer
+         */
 		public byte[] GetSendBuffer()
 		{
 			byte[] buffer;
@@ -42,6 +51,9 @@ namespace GTK_Demo_Client.DataHandler
 			return buffer;
 		}
 
+        /*
+         * set buffer at RecvBuffer
+         */
 		public bool SetRecvBuffer(byte[] buffer)
 		{
 			lock (Recv_Lock)
@@ -51,6 +63,9 @@ namespace GTK_Demo_Client.DataHandler
 			return true;
 		}
 
+        /*
+         * get buffer from RecvBuffer
+         */
 		public byte[] GetRecvBuffer()
 		{
 			byte[] buffer;
@@ -61,6 +76,9 @@ namespace GTK_Demo_Client.DataHandler
 			return buffer;
 		}
 
+        /*
+         * set message at PopupBuffer
+         */
 		public bool SetPopupBuffer(string buffer)
 		{
 			lock(Popup_Lock)
@@ -70,6 +88,9 @@ namespace GTK_Demo_Client.DataHandler
 			return true;
 		}
 
+        /*
+         * get message from PopupBuffer
+         */
 		public string GetPopupBuffer()
 		{
 			string buffer;
