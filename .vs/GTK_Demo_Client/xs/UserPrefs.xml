@@ -1,26 +1,25 @@
 ﻿<Properties StartupConfiguration="{68790EBB-2D46-42E2-9400-D8E02E06029B}|Default">
   <MonoDevelop.Ide.ItemProperties.GTK__Demo__Client PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GTK_Demo_Client/DataHandler/CDataFactory.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GTK_Demo_Client/MainWindow.cs">
     <Files>
       <File FileName="GTK_Demo_Client/Network/CNetworkManager.cs" Line="145" Column="32" />
       <File FileName="GTK_Demo_Client/Program.cs" Line="36" Column="1" />
-      <File FileName="GTK_Demo_Client/MainWindow.cs" Line="165" Column="59" />
+      <File FileName="GTK_Demo_Client/MainWindow.cs" Line="161" Column="4" />
       <File FileName="GTK_Demo_Client/Popup/CPopupHandler.cs" Line="40" Column="19" />
       <File FileName="GTK_Demo_Client/PopupWindow.cs" Line="44" Column="45" />
-      <File FileName="GTK_Demo_Client/DataHandler/CDataHandler.cs" />
+      <File FileName="GTK_Demo_Client/DataHandler/CDataHandler.cs" Line="72" Column="27" />
       <File FileName="GTK_Demo_Client/GameWindow.cs" />
       <File FileName="GTK_Demo_Client/Properties/AssemblyInfo.cs" />
-      <File FileName="GTK_Demo_Client/DataHandler/CDataFactory.cs" Line="1" Column="1" />
+      <File FileName="GTK_Demo_Client/DataHandler/CDataFactory.cs" Line="92" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="GTK_Demo_Client" expanded="True">
             <Node name="GTK_Demo_Client" expanded="True">
-              <Node name="DataHandler" expanded="True">
-                <Node name="CDataFactory.cs" selected="True" />
-              </Node>
+              <Node name="DataHandler" expanded="True" />
               <Node name="Popup" expanded="True" />
+              <Node name="MainWindow.cs" selected="True" />
             </Node>
           </Node>
         </State>

@@ -8,9 +8,9 @@ namespace GTK_Demo_Client.DataHandler
 	public class CDataFactory
 	{
 		private static CDataFactory DataFactory = new CDataFactory();
-		private Stack<byte[]> Send_buffer = new Stack<byte[]>();
-		private Stack<byte[]> Recv_buffer = new Stack<byte[]>();
-		private Stack<string> Popup_buffer = new Stack<string>();
+		private Queue<byte[]> Send_buffer = new Queue<byte[]>();
+		private Queue<byte[]> Recv_buffer = new Queue<byte[]>();
+		private Queue<string> Popup_buffer = new Queue<string>();
 
 		private static object Recv_Lock = new object();
 		private static object Send_Lock = new object();
@@ -33,7 +33,7 @@ namespace GTK_Demo_Client.DataHandler
 		{
 			lock(Send_Lock)
 			{
-				Send_buffer.Push(buffer);
+				Send_buffer.Enqueue(buffer);
 			}
 			return true;
 		}
@@ -46,7 +46,7 @@ namespace GTK_Demo_Client.DataHandler
 			byte[] buffer;
 			lock(Send_Lock)
 			{
-				buffer = Send_buffer.Count > 0 ? Send_buffer.Pop() : null;
+				buffer = Send_buffer.Count > 0 ? Send_buffer.Dequeue() : null;
 			}
 			return buffer;
 		}
@@ -58,7 +58,7 @@ namespace GTK_Demo_Client.DataHandler
 		{
 			lock (Recv_Lock)
 			{
-				Recv_buffer.Push(buffer);
+				Recv_buffer.Enqueue(buffer);
 			}
 			return true;
 		}
@@ -71,7 +71,7 @@ namespace GTK_Demo_Client.DataHandler
 			byte[] buffer;
 			lock(Recv_Lock)
 			{
-				buffer = Recv_buffer.Count > 0 ? Recv_buffer.Pop() : null;
+				buffer = Recv_buffer.Count > 0 ? Recv_buffer.Dequeue() : null;
 			}
 			return buffer;
 		}
@@ -83,7 +83,7 @@ namespace GTK_Demo_Client.DataHandler
 		{
 			lock(Popup_Lock)
 			{
-				Popup_buffer.Push(buffer);
+				Popup_buffer.Enqueue(buffer);
 			}
 			return true;
 		}
@@ -96,7 +96,7 @@ namespace GTK_Demo_Client.DataHandler
 			string buffer;
 			lock(Popup_Lock)
 			{
-				buffer = Popup_buffer.Count > 0 ? Popup_buffer.Pop() : null;
+				buffer = Popup_buffer.Count > 0 ? Popup_buffer.Dequeue() : null;
 			}
 			return buffer;
 		}

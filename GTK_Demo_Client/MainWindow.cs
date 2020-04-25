@@ -3,8 +3,6 @@ using System.ComponentModel;
 
 using Gtk;
 using GTK_Demo_Client.DataHandler;
-using GTK_Demo_Client.Popup;
-
 
 public partial class MainWindow : Gtk.Window
 {
@@ -15,9 +13,9 @@ public partial class MainWindow : Gtk.Window
 		InitializeBackgroundWorker();
 	}
 
-    /*
-     * initializing BackgroundWorker Thread
-     */
+	/*
+	 * initializing BackgroundWorker Thread
+	 */
 	private void InitializeBackgroundWorker()
 	{
 		PopupWorker = new BackgroundWorker();
@@ -26,9 +24,9 @@ public partial class MainWindow : Gtk.Window
 
 	}
 
-    /*
-     * BackgroundWorker Dowork
-     */
+	/*
+	 * BackgroundWorker Dowork
+	 */
 	private void Popup_Dowork(object sender, DoWorkEventArgs e)
 	{
 		BackgroundWorker worker = (BackgroundWorker)sender;
@@ -44,9 +42,9 @@ public partial class MainWindow : Gtk.Window
 		e.Result = Popup_Message;
 	}
 
-    /*
-     * BackgroundWorker RunWorkerCompleted
-     */
+	/*
+	 * BackgroundWorker RunWorkerCompleted
+	 */
 	private void Popup_Completed(object sender, RunWorkerCompletedEventArgs e)
 	{
 		Console.WriteLine("Background Worker Job Done : "+e.Result.ToString());
@@ -56,8 +54,8 @@ public partial class MainWindow : Gtk.Window
 	}
 
     /*
-     * this function show popup message came from server
-     */
+	 * this function show popup message came from server
+	 */
 	public void ShowPopup(string msg)
 	{
 		var Popup = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
@@ -66,11 +64,10 @@ public partial class MainWindow : Gtk.Window
 		Popup.Run();
 		Popup.Destroy();
 
-		if (msg.CompareTo("로그인 성공") == 0)
-		{
+		if (msg.CompareTo("로그인 성공") == 0){
 			GTK_Demo_Client.GameWindow GameWindow = new GTK_Demo_Client.GameWindow();
 			GameWindow.Show();
-			this.Hide();
+			this.Destroy();
 		}
 	}
 
@@ -123,7 +120,7 @@ public partial class MainWindow : Gtk.Window
 	 */
 	private void ShowPopup()
 	{
-		string result_msg = CPopupHandler.GetMessageFromServer();
+		string result_msg = GTK_Demo_Client.Popup.CPopupHandler.GetMessageFromServer();
 		var result = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
 		                                   Gtk.ButtonsType.Ok, result_msg);
 		result.Show();
@@ -134,7 +131,7 @@ public partial class MainWindow : Gtk.Window
 		{
 			GTK_Demo_Client.GameWindow GameWindow = new GTK_Demo_Client.GameWindow();
 			GameWindow.Show();
-			this.Hide();
+			this.Destroy();
 			return;
 		}
 
@@ -145,10 +142,9 @@ public partial class MainWindow : Gtk.Window
 		}
 
 	}
-
-    /*
-     * send ID and Pass to DataHandler
-     */
+	/*
+ 	 * send ID and Pass to DataHandler
+ 	 */
 	public bool LoginRequest(string ID, string Pass)
 	{
 		try
@@ -161,9 +157,9 @@ public partial class MainWindow : Gtk.Window
 		}
 	}
 
-    /*
-     * send ID and Pass to DataHandler
-     */
+	/*
+	 * send ID and Pass to DataHandler
+	 */
 	public bool RegistRequest(string ID, string Pass)
 	{
 		try

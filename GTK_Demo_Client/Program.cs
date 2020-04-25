@@ -8,8 +8,7 @@ using GTK_Demo_Client.Popup;
 
 namespace GTK_Demo_Client
 {
-	public enum Actions : int
-	{
+	public enum Actions : int{
 		Error = 0,
 		Donothing,
 		CloseWindow,

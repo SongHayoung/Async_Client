@@ -18,7 +18,7 @@ namespace GTK_Demo_Client.DataHandler
 		}
 
         /*
-         * this function helps moving Recv Sessions to right Stack at DataFactory
+         * this function helps moving Recv Sessions to right Queue at DataFactory
          */
         public static void Handling()
 		{
@@ -41,6 +41,12 @@ namespace GTK_Demo_Client.DataHandler
 				{
 					LoginResult result = (LoginResult)Packet.Deserialize(buffer);
 					DataFactory.SetPopupBuffer(result.msg);
+				}
+				if (packettype == PacketType.Heart_Beat)
+				{
+					DH_log("Received HB packet");
+					DataFactory.SetSendBuffer(buffer);
+					DH_log("Hearbeat received");
 				}
 			}
 		}

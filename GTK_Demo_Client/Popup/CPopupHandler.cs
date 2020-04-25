@@ -1,5 +1,8 @@
 ﻿using System;
 
+/*
+ * Do nothing
+ */
 using GTK_Demo_Client.DataHandler;
 namespace GTK_Demo_Client.Popup
 {
@@ -7,6 +10,9 @@ namespace GTK_Demo_Client.Popup
 	{
 		public CPopupHandler(){ }
 
+        /*
+         * Do nothing
+         */
 		public static void Run()
 		{
 			Console.WriteLine("Popup Manager on Active");
@@ -14,6 +20,9 @@ namespace GTK_Demo_Client.Popup
 			Console.WriteLine("Popup Manager Join");
 		}
 
+        /*
+         * Do nothing
+         */
 		private static void Handling()
 		{
 			string Popup_Message;
@@ -27,11 +36,17 @@ namespace GTK_Demo_Client.Popup
 			}
 		}
 
+        /*
+         * Do nothing
+         */
 		private static void PM_log(string str)
 		{
 			Console.WriteLine("Popup Manager : " + str);
 		}
 
+        /*
+         * Do nothing
+         */
 		public static string GetMessageFromServer()
 		{
 			string Message;
