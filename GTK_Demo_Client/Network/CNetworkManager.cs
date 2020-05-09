@@ -55,6 +55,7 @@ namespace GTK_Demo_Client.Network
 			Asynce.Completed += new EventHandler<SocketAsyncEventArgs>(Connect);
 			Client.ConnectAsync(Asynce);
 			Handling();
+			Client.Close();
 			Console.WriteLine("Network Manager Join");
 		}
 
@@ -147,15 +148,13 @@ namespace GTK_Demo_Client.Network
         private static void Recieve(object sender, SocketAsyncEventArgs e)
 		{
 			Socket client = (Socket)sender;
-			bool CompleteAsync = false;
 			if (Client.Connected && e.BytesTransferred > 0)
 			{
 				NWM_log("Receving Packet");
 				byte[] buffer = e.Buffer;
 				CDataHandler.Handling_RecvPacket(buffer);
 
-				CompleteAsync = client.ReceiveAsync(e);
-				if (!CompleteAsync)
+				if (!client.ReceiveAsync(e))
 				{
 					client.ReceiveAsync(e);
 				}

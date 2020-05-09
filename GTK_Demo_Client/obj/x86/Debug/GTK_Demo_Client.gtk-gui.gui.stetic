@@ -119,8 +119,12 @@
     <property name="MemberName" />
     <property name="Title" translatable="yes">GameWindow</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
-      <placeholder />
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+      </widget>
     </child>
   </widget>
   <widget class="Gtk.Window" id="GTK_Demo_Client.PopupWindow" design-size="308 162">

@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 using Gtk;
 using GTK_Demo_Client.DataHandler;
+using GTK_Demo_Client;
 
 public partial class MainWindow : Gtk.Window
 {
@@ -19,6 +20,7 @@ public partial class MainWindow : Gtk.Window
 	private void InitializeBackgroundWorker()
 	{
 		PopupWorker = new BackgroundWorker();
+		PopupWorker.WorkerSupportsCancellation = true;
 		PopupWorker.DoWork += new DoWorkEventHandler(Popup_Dowork);
 		PopupWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Popup_Completed);
 
@@ -73,8 +75,12 @@ public partial class MainWindow : Gtk.Window
 
 	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
 	{
-		Application.Quit();
-		a.RetVal = true;
+		PopupWorker.CancelAsync();
+		this.Destroy();
+		Gtk.Application.Quit();
+		Console.WriteLine("dele event");
+		//a.RetVal = false;
+		MainClass.SetRunning(false);
 	}
 
 
@@ -82,7 +88,7 @@ public partial class MainWindow : Gtk.Window
 	{   //LoginButton
 		string ID = entry1.Text.Trim();
 		string Pass = entry2.Text.Trim();
-
+		MainClass.setUserID(ID);
 		if (!LoginRequest(ID, Pass))
 		{
 			var request_fail = new Gtk.MessageDialog(null, Gtk.DialogFlags.Modal, Gtk.MessageType.Question,
@@ -95,7 +101,6 @@ public partial class MainWindow : Gtk.Window
 		if(!PopupWorker.IsBusy)
 			PopupWorker.RunWorkerAsync();
 	}
-
 
 	protected void OnButton2Clicked(object sender, EventArgs e)
 	{   //RegisterButton

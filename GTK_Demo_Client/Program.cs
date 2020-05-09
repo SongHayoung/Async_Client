@@ -17,7 +17,7 @@ namespace GTK_Demo_Client
 	class MainClass
 	{
 		private static bool Running = true;
-
+		private static string USERID = null;
 		public static void Main(string[] args)
 		{
 			Thread NWManager = new Thread(new ThreadStart(CNetworkManager.Run));
@@ -33,8 +33,9 @@ namespace GTK_Demo_Client
 			win.Show();
 			Application.Run();
 
-			while (IsRunning())
-			{ }
+			while (IsRunning()){ }
+			CDataFactory DataFactory = CDataFactory.GetDataFactory();
+			DataFactory.freeLock();
 
 			NWManager.Join();
 			HandlingManager.Join();
@@ -48,6 +49,15 @@ namespace GTK_Demo_Client
 		public static void SetRunning(bool status)
 		{
 			Running = status;
+			Console.WriteLine("Running end");
+		}
+		public static void setUserID(string userid)
+		{
+			USERID = userid;
+		}
+		public static string getUserID()
+		{
+			return USERID;
 		}
 	}
 }

@@ -4,6 +4,8 @@ namespace GTK_Demo_Client
 {
 	public partial class GameWindow
 	{
+		private global::Gtk.Fixed fixed1;
+
 		protected virtual void Build()
 		{
 			global::Stetic.Gui.Initialize(this);
@@ -11,6 +13,11 @@ namespace GTK_Demo_Client
 			this.Name = "GTK_Demo_Client.GameWindow";
 			this.Title = global::Mono.Unix.Catalog.GetString("GameWindow");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+			// Container child GTK_Demo_Client.GameWindow.Gtk.Container+ContainerChild
+			this.fixed1 = new global::Gtk.Fixed();
+			this.fixed1.Name = "fixed1";
+			this.fixed1.HasWindow = false;
+			this.Add(this.fixed1);
 			if ((this.Child != null))
 			{
 				this.Child.ShowAll();
@@ -18,6 +25,7 @@ namespace GTK_Demo_Client
 			this.DefaultWidth = 400;
 			this.DefaultHeight = 300;
 			this.Show();
+			this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 		}
 	}
 }

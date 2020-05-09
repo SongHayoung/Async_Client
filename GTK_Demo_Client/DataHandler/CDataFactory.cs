@@ -34,6 +34,7 @@ namespace GTK_Demo_Client.DataHandler
 			lock(Send_Lock)
 			{
 				Send_buffer.Enqueue(buffer);
+				System.Threading.Monitor.Pulse(Send_Lock);
 			}
 			return true;
 		}
@@ -47,6 +48,8 @@ namespace GTK_Demo_Client.DataHandler
 			lock(Send_Lock)
 			{
 				buffer = Send_buffer.Count > 0 ? Send_buffer.Dequeue() : null;
+				if(buffer==null)
+                    System.Threading.Monitor.Wait(Send_Lock);
 			}
 			return buffer;
 		}
@@ -59,6 +62,7 @@ namespace GTK_Demo_Client.DataHandler
 			lock (Recv_Lock)
 			{
 				Recv_buffer.Enqueue(buffer);
+				System.Threading.Monitor.Pulse(Recv_Lock);
 			}
 			return true;
 		}
@@ -72,6 +76,8 @@ namespace GTK_Demo_Client.DataHandler
 			lock(Recv_Lock)
 			{
 				buffer = Recv_buffer.Count > 0 ? Recv_buffer.Dequeue() : null;
+				if(buffer==null)
+					System.Threading.Monitor.Wait(Recv_Lock);
 			}
 			return buffer;
 		}
@@ -84,6 +90,7 @@ namespace GTK_Demo_Client.DataHandler
 			lock(Popup_Lock)
 			{
 				Popup_buffer.Enqueue(buffer);
+				System.Threading.Monitor.Pulse(Popup_Lock);
 			}
 			return true;
 		}
@@ -97,8 +104,20 @@ namespace GTK_Demo_Client.DataHandler
 			lock(Popup_Lock)
 			{
 				buffer = Popup_buffer.Count > 0 ? Popup_buffer.Dequeue() : null;
+				if(buffer==null)
+					System.Threading.Monitor.Wait(Popup_Lock);
 			}
 			return buffer;
+		}
+
+		public void freeLock()
+		{
+			lock (Popup_Lock)
+				System.Threading.Monitor.Pulse(Popup_Lock);
+			lock (Recv_Lock)
+				System.Threading.Monitor.Pulse(Recv_Lock);
+			lock (Send_Lock)
+				System.Threading.Monitor.Pulse(Send_Lock);
 		}
 
 	}
